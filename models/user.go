@@ -2,72 +2,50 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
-// User 基础用户模型
+// User 用户基础信息
 type User struct {
-	ID        uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
-	Username  string         `gorm:"size:50;uniqueIndex" json:"username"`
-	Password  string         `gorm:"size:100" json:"-"`
-	Email     string         `gorm:"size:100;uniqueIndex" json:"email"`
-	Phone     string         `gorm:"size:20" json:"phone"`
-	RealName  string         `gorm:"size:50" json:"real_name"`
-	Gender    string         `gorm:"size:10" json:"gender"`
-	Avatar    string         `gorm:"size:255" json:"avatar"`
-	Role      string         `gorm:"size:20" json:"role"` // student, counselor, admin
-	Status    string         `gorm:"size:20;default:'active'" json:"status"`
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	Username  string    `json:"username"`
+	Password  string    `json:"password"`
+	Name      string    `json:"name"`
+	Sex       string    `json:"sex"`
+	Phone     string    `json:"phone"`
+	Email     string    `json:"email"`
+	Avatar    string    `json:"avatar"`
+	Role      string    `json:"role"`
+	Remark    string    `json:"remark"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }
 
-// Student 学生模型
+// Student 学生信息
 type Student struct {
-	ID           uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt    time.Time      `json:"created_at"`
-	UpdatedAt    time.Time      `json:"updated_at"`
-	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"`
-	UserID       uint           `gorm:"uniqueIndex" json:"user_id"`
-	User         User           `gorm:"foreignKey:UserID" json:"user"`
-	StudentID    string         `gorm:"size:50;uniqueIndex" json:"student_id"`
-	Grade        string         `gorm:"size:20" json:"grade"`
-	Class        string         `gorm:"size:50" json:"class"`
-	Major        string         `gorm:"size:100" json:"major"`
-	College      string         `gorm:"size:100" json:"college"`
-	Dormitory    string         `gorm:"size:50" json:"dormitory"`
-	EmergContact string         `gorm:"size:50" json:"emerg_contact"`
-	EmergPhone   string         `gorm:"size:20" json:"emerg_phone"`
+	ID             uint      `gorm:"primaryKey" json:"id"`
+	UserID         int       `gorm:"column:user_id" json:"user_id"`
+	StudentID      string    `gorm:"column:student_id" json:"student_id"`
+	Major          string    `json:"major"`
+	ClassName      string    `gorm:"column:class_name" json:"class_name"`
+	Grade          string    `json:"grade"`
+	EnrollmentDate time.Time `gorm:"column:enrollment_date" json:"enrollment_date"`
+	GraduationDate time.Time `gorm:"column:graduation_date" json:"graduation_date"`
+	Dormitory      string    `json:"dormitory"`
+	CreatedAt      time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }
 
-// Counselor 心理咨询师模型
+// Counselor 咨询师信息
 type Counselor struct {
-	ID            uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt     time.Time      `json:"created_at"`
-	UpdatedAt     time.Time      `json:"updated_at"`
-	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
-	UserID        uint           `gorm:"uniqueIndex" json:"user_id"`
-	User          User           `gorm:"foreignKey:UserID" json:"user"`
-	EmployeeID    string         `gorm:"size:50;uniqueIndex" json:"employee_id"`
-	Title         string         `gorm:"size:50" json:"title"`
-	Qualification string         `gorm:"size:100" json:"qualification"`
-	Specialty     string         `gorm:"size:255" json:"specialty"`
-	Introduction  string         `gorm:"type:text" json:"introduction"`
-	Office        string         `gorm:"size:100" json:"office"`
-	Schedule      string         `gorm:"type:text" json:"schedule"`
-}
-
-// Admin 管理员模型
-type Admin struct {
-	ID         uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt  time.Time      `json:"created_at"`
-	UpdatedAt  time.Time      `json:"updated_at"`
-	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-"`
-	UserID     uint           `gorm:"uniqueIndex" json:"user_id"`
-	User       User           `gorm:"foreignKey:UserID" json:"user"`
-	EmployeeID string         `gorm:"size:50;uniqueIndex" json:"employee_id"`
-	Department string         `gorm:"size:100" json:"department"`
-	Position   string         `gorm:"size:100" json:"position"`
-	Permission string         `gorm:"type:text" json:"permission"`
+	ID             uint      `gorm:"primaryKey" json:"id"`
+	UserID         int       `gorm:"column:user_id" json:"user_id"`
+	Title          string    `json:"title"`
+	Specialty      string    `json:"specialty"`
+	Introduction   string    `json:"introduction"`
+	Status         int       `json:"status"`
+	EmployeeID     string    `gorm:"column:employee_id" json:"employee_id"`
+	Department     string    `json:"department"`
+	OfficeLocation string    `gorm:"column:office_location" json:"office_location"`
+	CreatedAt      time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }

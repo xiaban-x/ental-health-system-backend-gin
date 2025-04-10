@@ -46,7 +46,7 @@ func InitDB() {
 	log.Println("数据库连接成功")
 
 	// 自动迁移数据库模型
-	migrateModels()
+	// migrateModels()
 }
 
 // 自动迁移数据库模型
@@ -54,16 +54,21 @@ func migrateModels() {
 	log.Println("开始数据库迁移...")
 
 	err := DB.AutoMigrate(
-		&models.User{},
-		&models.Student{},
-		&models.Counselor{},
-		&models.Admin{},
-		&models.PsychTest{},
-		&models.TestQuestion{},
-		&models.TestResult{},
-		&models.Appointment{},
-		&models.CounselingRecord{},
-		&models.Article{},
+		&models.User{},         // 用户基础信息
+		&models.Student{},      // 学生信息
+		&models.Counselor{},    // 咨询师信息
+		&models.Appointment{},  // 咨询预约
+		&models.TimeSlot{},     // 咨询时间段
+		&models.ExamPaper{},    // 试卷
+		&models.ExamQuestion{}, // 试题
+		&models.ExamRecord{},   // 考试记录
+		&models.Resource{},     // 资源（文章、视频等）
+		&models.ResourceTag{},  // 资源标签关联
+		&models.Tag{},          // 标签
+		&models.Feedback{},     // 用户反馈
+		&models.Config{},       // 系统配置
+		&models.Token{},        // 用户令牌
+		&models.ChunkInfo{},    // 分片上传信息
 	)
 
 	if err != nil {

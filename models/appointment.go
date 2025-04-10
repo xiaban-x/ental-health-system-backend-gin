@@ -2,39 +2,32 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
-// Appointment 咨询预约模型
+// Appointment 咨询预约
 type Appointment struct {
-	ID                uint               `gorm:"primaryKey" json:"id"`
-	CreatedAt         time.Time          `json:"created_at"`
-	UpdatedAt         time.Time          `json:"updated_at"`
-	DeletedAt         gorm.DeletedAt     `gorm:"index" json:"-"`
-	StudentID         uint               `json:"student_id"`
-	Student           Student            `gorm:"foreignKey:StudentID" json:"student,omitempty"`
-	CounselorID       uint               `json:"counselor_id"`
-	Counselor         Counselor          `gorm:"foreignKey:CounselorID" json:"counselor,omitempty"`
-	AppointTime       time.Time          `json:"appoint_time"`
-	Duration          int                `json:"duration"` // 预约时长（分钟）
-	Type              string             `gorm:"size:50" json:"type"`
-	Topic             string             `gorm:"size:100" json:"topic"`
-	Description       string             `gorm:"type:text" json:"description"`
-	Status            string             `gorm:"size:20;default:'pending'" json:"status"` // pending, confirmed, canceled, completed
-	Remark            string             `gorm:"type:text" json:"remark"`
-	CounselingRecords []CounselingRecord `gorm:"foreignKey:AppointmentID" json:"counseling_records,omitempty"`
+	ID            uint      `gorm:"primaryKey" json:"id"`
+	UserID        int       `gorm:"column:user_id" json:"user_id"`
+	Username      string    `json:"username"`
+	CounselorID   int       `gorm:"column:counselor_id" json:"counselor_id"`
+	CounselorName string    `gorm:"column:counselor_name" json:"counselor_name"`
+	TimeSlotID    int       `gorm:"column:time_slot_id" json:"time_slot_id"`
+	StartTime     time.Time `gorm:"column:start_time" json:"start_time"`
+	EndTime       time.Time `gorm:"column:end_time" json:"end_time"`
+	Status        string    `json:"status"`
+	Reason        string    `json:"reason"`
+	Notes         string    `json:"notes"`
+	CreatedAt     time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt     time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }
 
-// CounselingRecord 咨询记录模型
-type CounselingRecord struct {
-	ID            uint           `gorm:"primaryKey" json:"id"`
-	CreatedAt     time.Time      `json:"created_at"`
-	UpdatedAt     time.Time      `json:"updated_at"`
-	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
-	AppointmentID uint           `json:"appointment_id"`
-	Content       string         `gorm:"type:text" json:"content"`
-	FollowUp      string         `gorm:"type:text" json:"follow_up"`
-	IsPrivate     bool           `gorm:"default:false" json:"is_private"` // 是否仅咨询师可见
-	CreatedBy     uint           `json:"created_by"`                      // 记录创建者ID（咨询师）
+// TimeSlot 咨询时间段
+type TimeSlot struct {
+	ID          uint      `gorm:"primaryKey" json:"id"`
+	CounselorID int       `gorm:"column:counselor_id" json:"counselor_id"`
+	StartTime   time.Time `gorm:"column:start_time" json:"start_time"`
+	EndTime     time.Time `gorm:"column:end_time" json:"end_time"`
+	Status      string    `json:"status"`
+	CreatedAt   time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }

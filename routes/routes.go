@@ -6,25 +6,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SetupRoutes 配置所有路由
 func SetupRoutes(r *gin.Engine) {
-	// API v1 路由组
 	v1 := r.Group("/api/v1")
 	{
-		// 预约相关路由
-		appointmentRoutes := v1.Group("/appointments")
+		// 用户相关路由
+		users := v1.Group("/users")
 		{
-			appointmentRoutes.POST("/", controllers.CreateAppointment)
-			// appointmentRoutes.GET("/", controllers.GetUserAppointments)
-			appointmentRoutes.PUT("/:id", controllers.UpdateAppointment)
+			users.POST("/", controllers.CreateUser)
+			users.GET("/", controllers.GetUserList)
+			users.GET("/:id", controllers.GetUserByID)
+			users.PUT("/:id", controllers.UpdateUser)
+			users.DELETE("/:id", controllers.DeleteUser)
 		}
 
-		// 文章相关路由
-		articleRoutes := v1.Group("/articles")
+		// 预约相关路由
+		appointments := v1.Group("/appointments")
 		{
-			// articleRoutes.GET("/", controllers.GetAllArticles)
-			// articleRoutes.GET("/:id", controllers.GetArticle)
-			articleRoutes.POST("/", controllers.CreateArticle)
+			appointments.POST("/", controllers.CreateAppointment)
+			appointments.GET("/", controllers.GetAppointmentList)
+			appointments.GET("/:id", controllers.GetAppointmentByID)
+			appointments.PUT("/:id", controllers.UpdateAppointment)
+			appointments.DELETE("/:id", controllers.DeleteAppointment)
 		}
 	}
 }
