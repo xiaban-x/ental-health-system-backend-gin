@@ -46,13 +46,42 @@ func InitDB() {
 	log.Println("数据库连接成功")
 
 	// 自动迁移数据库模型
-	// migrateModels()
+	migrateModels()
 }
 
-// 自动迁移数据库模型
+// migrateModels 数据库迁移
 func migrateModels() {
 	log.Println("开始数据库迁移...")
 
+	// 手动删除旧的唯一索引
+	tables := []string{"users", "students", "counselors"}
+	for _, table := range tables {
+		// 检查表是否存在
+		if DB.Migrator().HasTable(table) {
+			// 删除旧的索引
+			var indexes []string
+			switch table {
+			case "users":
+				indexes = []string{"idx_users_phone", "idx_users_email", "phone", "email"}
+			case "students":
+				indexes = []string{"idx_students_student_id", "student_id"}
+			case "counselors":
+				indexes = []string{"idx_counselors_employee_id", "employee_id"}
+			}
+
+			for _, index := range indexes {
+				if DB.Migrator().HasIndex(table, index) {
+					if err := DB.Migrator().DropIndex(table, index); err != nil {
+						fmt.Printf("删除索引 %s 失败: %v\n", index, err)
+					} else {
+						fmt.Printf("成功删除索引 %s\n", index)
+					}
+				}
+			}
+		}
+	}
+
+	// 执行迁移
 	err := DB.AutoMigrate(
 		&models.User{},         // 用户基础信息
 		&models.Student{},      // 学生信息
@@ -72,7 +101,7 @@ func migrateModels() {
 	)
 
 	if err != nil {
-		log.Fatalf("数据库迁移失败: %v", err)
+		log.Fatal("数据库迁移失败:", err)
 	}
 
 	log.Println("数据库迁移完成")

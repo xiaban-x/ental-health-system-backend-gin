@@ -14,25 +14,25 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title           学生心理健康管理系统 API
-// @version         1.0
-// @description     学生心理健康管理系统的RESTful API服务
-// @termsOfService  http://swagger.io/terms/
+// @title 心理健康系统 API
+// @version 1.0
+// @description 心理健康系统后端 API 文档
+// @termsOfService http://swagger.io/terms/
 
-// @contact.name   API Support
-// @contact.url    http://www.example.com/support
-// @contact.email  support@example.com
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
 
-// @license.name  MIT
-// @license.url   https://opensource.org/licenses/MIT
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
-// @BasePath  /api/v1
+// @host localhost:8080
+// @BasePath /api/v1
+// @schemes http https
 
-// @securityDefinitions.apikey  BearerAuth
-// @in                          header
-// @name                        Authorization
-// @description                 使用Bearer令牌进行身份验证
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	// 加载环境变量
 	err := godotenv.Load()
